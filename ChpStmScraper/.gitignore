@@ -444,3 +444,5 @@ $RECYCLE.BIN/
 bin
 obj
 ChpStmScraper.db
+
+.vscode

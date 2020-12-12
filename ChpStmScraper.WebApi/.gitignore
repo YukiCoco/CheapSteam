@@ -448,3 +448,5 @@ ChpStmScraper.db
 appsettings.Development.json
 
 wwwroot/*
+
+.vscode

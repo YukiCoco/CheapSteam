@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChpStmScraper\ChpStmScraper.csproj" />
+    <Content Include="ChpStmScraper.Template.db" CopyToOutputDirectory="Always" ExcludeFromSingleFile="true"/>
+    <Content Include="appsettings.json" CopyToOutputDirectory="Always" ExcludeFromSingleFile="true"/>
+    <Content Include="wwwroot\**\*.*" CopyToOutputDirectory="Always" ExcludeFromSingleFile="true"/>
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" ExcludeFromSingleFile="true"/>
   </ItemGroup>
 
 </Project>

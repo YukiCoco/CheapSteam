@@ -108,13 +108,13 @@ namespace ChpStmScraper
                                   switch (jItem["game"].ToString() == "csgo" ? Goods.GameKind.CSGO : Goods.GameKind.DOTA2)
                                   {
                                       case Goods.GameKind.CSGO:
-                                          if (buffSellNum < Configuration.CsgoMinSellCount)
+                                          if (buffSellNum < Configuration.MinSellCount)
                                           {
                                               continue;
                                           }
                                           break;
                                       case Goods.GameKind.DOTA2:
-                                          if (buffSellNum < Configuration.Dota2MinSellCount)
+                                          if (buffSellNum < Configuration.MinSellCount)
                                           {
                                               continue;
                                           }

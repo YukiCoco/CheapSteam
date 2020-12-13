@@ -55,19 +55,19 @@ namespace ChpStmScraper
         /// CSGO 物品最小在售数
         /// </summary>
         /// <value></value>
-        public static int CsgoMinSellCount => int.Parse(configurationRoot["CsgoMinSellCount"]);
+        public static int MinSellCount => int.Parse(configurationRoot["MinSellCount"]);
 
         /// <summary>
         /// DOTA2 物品最小在售数
         /// </summary>
         /// <value></value>
-        public static int Dota2MinSellCount => int.Parse(configurationRoot["Dota2MinSellCount"]);
+        //public static int Dota2MinSellCount => int.Parse(configurationRoot["Dota2MinSellCount"]);
 
         /// <summary>
         /// 最小售价
         /// </summary>
         /// <value></value>
-        public static int MinSellPrice => int.Parse(configurationRoot["MinSellPrice"]);
+        //public static int MinSellPrice => int.Parse(configurationRoot["MinSellPrice"]);
 
         /// <summary>
         /// Steam Cookies

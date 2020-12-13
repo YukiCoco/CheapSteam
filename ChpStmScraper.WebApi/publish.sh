@@ -1,4 +1,4 @@
-version="1.0.1"
+version="latest"
 
 dotnet publish --runtime linux-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${version}/CheapSteam-${version}-linux-x64 -c Release
 dotnet publish --runtime osx-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${version}/CheapSteam-${version}-macOS-x64 -c Release

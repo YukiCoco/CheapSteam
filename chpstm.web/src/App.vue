@@ -9,7 +9,7 @@
     </v-main>
     <v-footer >
       <v-col class="text-center" style="padding:3px;" cols="12">
-        <p style="padding:0px;margin:0px;">{{ new Date().getFullYear() }} — <strong><a class="" href="">Cheap Steam</a></strong></p>
+        <p style="padding:0px;margin:0px;">{{ new Date().getFullYear() }} — <strong><a class="" href="https://github.com/YukiCoco/CheapSteam">Cheap Steam</a></strong></p>
         <p style="padding:0px;margin:0px;" class="font-weight-medium">i@kurisu.moe</p>
       </v-col>
     </v-footer>

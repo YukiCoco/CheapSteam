@@ -9,7 +9,7 @@ namespace ChpStmScraper
         public DbSet<Goods> Goods {get ;set;}
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=ChpStmScraper.db");
+            options.UseSqlite(Configuration.ConnectionString);
             //var verionArray = Configuration.MysqlVersion.Split(".");
             //options.UseMySql(Configuration.ConnectionString,new MySqlServerVersion(new Version(int.Parse(verionArray[0]),int.Parse(verionArray[1]),int.Parse(verionArray[2]))));
         }

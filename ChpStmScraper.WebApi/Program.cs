@@ -16,7 +16,7 @@ namespace ChpStmScraper.WebApi
     {
         public static void Main(string[] args)
         {
-            
+            Init();
             CreateHostBuilder(args).Build().Run();
         }
 

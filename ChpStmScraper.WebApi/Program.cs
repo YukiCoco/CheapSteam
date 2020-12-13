@@ -27,7 +27,7 @@ namespace ChpStmScraper.WebApi
             if(!File.Exists("ChpStmScraper.db"))
                 File.Copy("ChpStmScraper.Template.db","ChpStmScraper.db");
             if(string.IsNullOrEmpty(Configuration.ProxyUrl))
-                Console.WriteLine("检测到未设置代理，是否已能够访问 https://steamcommunity.com/ ？您可能需要开启加速器加速 steam 社区");
+                Console.WriteLine("检测到未设置代理，是否已能够访问 https://steamcommunity.com/ ?");
             if(string.IsNullOrEmpty(Configuration.SteamCookies)){
                 Console.WriteLine("Steam Cookie 未设置，程序关闭");
                 Process.GetCurrentProcess().Kill();

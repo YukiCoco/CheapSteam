@@ -49,9 +49,45 @@ namespace ChpStmScraper
         private static int maxPageNum = 2333;
         private static int currentSyncThread = 0;
         private static string lastScraperName = "";
+
+        private static void CheckIfSteamCommunity()
+        {
+
+            HttpService httpService = new HttpService();
+            if (!string.IsNullOrEmpty(Configuration.ProxyUrl))
+            {
+                httpService = new HttpService(Configuration.ProxyUrl);
+            }
+            try
+            {
+                Console.WriteLine("正在检测 steam 社区连通性...");
+                httpService.GetWithCookie("https://steamcommunity.com/market/", Configuration.SteamCookies, result =>
+                {
+                    //判断是否可以访问 steam 社区
+                    Regex regex = new Regex(@"(?<=<span id=""market_buynow_dialog_myaccountname"">).+(?=<\/span>)");
+                    var match = regex.Matches(result.Content.ReadAsStringAsync().Result);
+                    if (match.Count() == 0)
+                    {
+                        Console.WriteLine($"Steam Cookie 无效或已失效，退出程序");
+                        Process.GetCurrentProcess().Kill();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"当前 steam 账户为 {match[0].Value}");
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                 Console.WriteLine("访问 steam 社区出现错误，是否已开启代理？");
+                 Console.WriteLine(ex.StackTrace);
+                 Process.GetCurrentProcess().Kill();
+            }
+            
+        }
         public static void Start()
         {
-            //BUFF
+            CheckIfSteamCommunity();
             var baseAddress = new Uri(Helper.GetBaseUrl(Configuration.BuffUrl));
             Timer timer = new Timer(state =>
             {
@@ -153,9 +189,8 @@ namespace ChpStmScraper
                                   var marketId = regex.Match(marketResult).Value;
                                   if (string.IsNullOrEmpty(marketId))
                                   {
-                                      //太快了
                                       Thread.Sleep(TimeSpan.FromSeconds(10));
-                                      throw new Exception("错误：找不到MarketID");
+                                      throw new Exception("错误：找不到MarketID，可能是爬取速度过快");
                                   }
                                   string steamApiUrl = $"https://steamcommunity.com/market/itemordershistogram?country=CN&language=schinese&currency=23&item_nameid={marketId}&two_factor=0";
 

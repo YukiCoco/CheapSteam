@@ -8,7 +8,7 @@ Cheap Steam 为您提供 STEAM 与 BUFF 的饰品价格对比数据，您可以�
 + 多数据过滤条件，快速找到合适的饰品
 
 ## Usage
-[Guide](https://github.com/YukiCoco/CheapSteam/blob/master/Guide)
+[Guide](https://github.com/YukiCoco/CheapSteam/blob/master/Guide.md)
 
 ## Download
 [Release](https://github.com/YukiCoco/CheapSteam/releases)

@@ -19,6 +19,6 @@
 ## 修改配置文件
 
 1. 修改 `appsettings.json` 文件，找到 `BuffSession` 与 `SteamCookies` 字段，分别修改为 BUFF Cookie 里的 `Session` 和 Steam 市场的 `Cookie` Header.
-2. 如果你在中国大陆无法访问 steam 社区，可以考虑开启加速器加速 Steam 社区.或者使用配置文件里的 `ProxyUrl` 字段，填写为你科学上网软件提供的本地 HTTP 代理地址，比如 [`http://127.0.0.1:7890`](http://127.0.0.1:7890/) 
+2. 如果你在中国大陆无法访问 steam 社区，可以考虑使用 [steamcommunity 302 Ver.10.8.3](https://keylol.com/t339527-1-1).或者使用配置文件里的 `ProxyUrl` 字段，填写为你科学上网软件提供的本地 HTTP 代理地址，比如 [`http://127.0.0.1:7890`](http://127.0.0.1:7890/) 
 3. 打开 `ChpStmScraper.WebApi` 即可
 4. 更详细的配置文件详解请查看 [这里](https://github.com/YukiCoco/CheapSteam/blob/master/Config.md)

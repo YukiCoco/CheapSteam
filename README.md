@@ -15,7 +15,7 @@ Cheap Steam 为您提供 STEAM 与 BUFF 的饰品价格对比数据，您可以�
 [Release](https://github.com/YukiCoco/CheapSteam/releases)
 
 ## Demo
-![Peek-2020-12-14-16-32.gif](https://cdnimg.kurisu.moe/images/2020/12/14/Peek-2020-12-14-16-32.gif)
+![2020-12-14_20-15.png](https://cdnimg.kurisu.moe/images/2020/12/14/2020-12-14_20-15.png)  
 ![2020-12-13_00-57_1.png](https://cdnimg.kurisu.moe/images/2020/12/13/2020-12-13_00-57_1.png)
 
 ## LICENSE

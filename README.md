@@ -11,10 +11,11 @@ Cheap Steam 为您提供 STEAM 与 BUFF 的饰品价格对比数据，您可以�
 [Guide](https://github.com/YukiCoco/CheapSteam/blob/master/Guide.md)
 
 ## Download
+非常不建议从其他地方下载，因为要读取 Steam 和 BUFF Cookie，从其他地方下载的程序有可能会包含恶意代码导致财产损失。  
 [Release](https://github.com/YukiCoco/CheapSteam/releases)
 
 ## Demo
 ![2020-12-13_00-57_1.png](https://cdnimg.kurisu.moe/images/2020/12/13/2020-12-13_00-57_1.png)
 
 ## LICENSE
-LICENSE under GNU General Public License v3.0.
+LICENSE under the GNU General Public License v3.0.

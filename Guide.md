@@ -4,7 +4,8 @@
 ### BUFF Session
 
 以 Chrome 为例，登录 BUFF 后点左上角的小锁，再点 Cookie 就能找到了  
->buff不能直接双击复制，会不完整，显示框显示的也不完整，需要手动拉到左边后从头到尾复制 [issue #1](https://github.com/YukiCoco/CheapSteam/issues/1).
+>buff不能直接双击复制，会不完整，显示框显示的也不完整，需要手动拉到左边后从头到尾复制 [issue #1](https://github.com/YukiCoco/CheapSteam/issues/1).  
+
 ![2020-12-13_18-08.png](https://cdnimg.kurisu.moe/images/2020/12/13/2020-12-13_18-08.png)
 ### STEAM Cookie
 

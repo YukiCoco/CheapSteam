@@ -115,10 +115,20 @@ namespace ChpStmScraper
                     }
                     httpService.GetWithCookie(Configuration.BuffUrl + $"&page_num={pageNum}", new Cookie("session", Configuration.BuffSession), result =>
                       {
+                          try
+                          {
+                              result.EnsureSuccessStatusCode();
+                          }
+                          catch (HttpRequestException ex)
+                          {
+                              // TODO:这里会导致 Response status code does not indicate success: 429 (Too Many Requests).
+                              Console.WriteLine(ex.Message);
+                              Thread.Sleep(TimeSpan.FromSeconds(10));
+                              return;
+                          }
                           ThreadPool.QueueUserWorkItem(state =>
                           {
                               HttpService httpService = new HttpService();
-                              result.EnsureSuccessStatusCode();
                               var jsonObj = JObject.Parse(result.Content.ReadAsStringAsync().Result);
                               ScraperDbContext context = new ScraperDbContext();
                               //页面数修改

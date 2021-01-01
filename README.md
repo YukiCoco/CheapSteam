@@ -1,7 +1,7 @@
 # CheapSteam
 Cheap Steam 为您提供 STEAM 与 BUFF 的饰品价格对比数据，您可以从此快速找出价格合适的饰品，在 BUFF 购买然后在 Steam 市场出售，以此赚取大额的差价。  
 这世上本没有倒狗，亦或者人人都是倒狗。  
-[我的 Steam 主页](https://steamcommunity.com/id/YukinoCoco/)
+[我的 Steam 主页](https://steamcommunity.com/id/KurisuMoe)
 
 ## Feature
 + 使用简单

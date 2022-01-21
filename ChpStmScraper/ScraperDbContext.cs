@@ -1,7 +1,6 @@
 using System;
 using ChpStmScraper.Models;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 namespace ChpStmScraper
 {
     public class ScraperDbContext : DbContext

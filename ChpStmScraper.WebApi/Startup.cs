@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using ChpStmScraper;
 
 namespace ChpStmScraper.WebApi
@@ -29,10 +28,6 @@ namespace ChpStmScraper.WebApi
         {
             services.AddDbContext<ScraperDbContext>();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ChpStmScraper.WebApi", Version = "v1" });
-            });
             //启动爬虫
             if(ChpStmScraper.Configuration.IsEnableScraper)
                 services.AddSingleton(new Services.ScraperService());
@@ -44,8 +39,6 @@ namespace ChpStmScraper.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChpStmScraper.WebApi v1"));
             }
 
             app.UseCors(p => {

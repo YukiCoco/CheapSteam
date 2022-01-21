@@ -11,7 +11,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "bin/Debug/net5.0/ChpStmScraper.WebApi",
+            "program": "bin/Debug/net6/ChpStmScraper.WebApi",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

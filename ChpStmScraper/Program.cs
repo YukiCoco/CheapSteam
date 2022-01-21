@@ -211,6 +211,8 @@ namespace ChpStmScraper
                                   var marketSellPrice = regex.Match(steamJsonObj["sell_order_table"].ToString()).Value;
                                   regex = new Regex(@"(?<=数量<\/th><\/tr><tr><td align=""right"" class="""">¥ ).*?(?=<)", RegexOptions.Multiline);
                                   var marketBuyPrice = regex.Match(steamJsonObj["buy_order_table"].ToString()).Value;
+                                  regex = new Regex(@"(?<=>)\d*(?=<\/span>\s个出售中)", RegexOptions.Multiline);
+                                  var SteamSellNum = regex.Match(steamJsonObj["sell_order_summary"].ToString()).Value;
                                   Goods item = new Goods()
                                   {
                                       Kind = jItem["game"].ToString() == "csgo" ? Goods.GameKind.CSGO : Goods.GameKind.DOTA2,
@@ -219,7 +221,7 @@ namespace ChpStmScraper
                                       BuffSellPrice = Helper.String2Double(jItem["sell_min_price"].ToString()),
                                       SteamSellPrice = Helper.String2Double(marketSellPrice),
                                       SteamBuyPrice = Helper.String2Double(marketBuyPrice),
-                                      SteamSellNum = Helper.String2Int(steamJsonObj["lowest_sell_order"].ToString()),
+                                      SteamSellNum = Helper.String2Int(SteamSellNum),
                                       BuffSellNum = buffSellNum
                                   };
                                   if (item.BuffSellPrice != 0 && item.SteamBuyPrice != 0)

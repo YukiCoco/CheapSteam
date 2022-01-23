@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddAntDesign();
 if (!string.IsNullOrEmpty(Configuration.ProxyUrl))
 {
     builder.Services.AddSingleton<ChpStmScraper.Services.HttpService>(new ChpStmScraper.Services.HttpService(Configuration.ProxyUrl));

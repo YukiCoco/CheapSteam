@@ -16,19 +16,46 @@
         <StatusCard Title="网易 BUFF 市场" TitleColor="@BuffTitleColor" IconName="game" Status="@BuffStatus"><a role="button" style="opacity: 0.5;" @onclick="RefreshBuffStatus">刷新</a></StatusCard>
     </div>
 </div>
+<div class="card mt-4 mb-4">
+  <div class="card-header d-flex justify-content-between">
+    Log
+    <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>
+  </div>
+  <div class="card-body" style="height: 20em">
+        @if (LogQueue == null)
+        {
+            <p class="card-text mb-1">loading...</p>
+        }
+        else
+        {
+            @foreach (var item in LogQueue)
+            {
+                <p class="card-text mb-1">@item</p>
+            }
+        }
+  </div>
+</div>
 
 @code {
     private string SteamStatus { get; set; } = "测试中...";
     private string BuffStatus { get; set; } = "测试中...";
     private string SteamTitleColor { get; set; } = "text-success";
     private string BuffTitleColor { get; set; } = "text-success";
+    private Queue<string>? LogQueue;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        LogQueue = new Queue<string>();
         if (firstRender)
         {
             await UpdateBuffStatus();
             await UpdateSteamStatus();
         }
+    }
+
+    private void UpdateLog()
+    {
+        //LogQueue.Enqueue("正在查询第1页，物品名：M4A1 消音型 | 机械工业 (略有磨损)");
     }
 
     private async Task<bool> CheckSteamStatus()

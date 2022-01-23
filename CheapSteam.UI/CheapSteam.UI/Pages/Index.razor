@@ -1,0 +1,124 @@
+﻿@page "/"
+@using System.Text.RegularExpressions
+@using System.Diagnostics
+@inject ChpStmScraper.Services.HttpService httpService
+
+<PageTitle>Index</PageTitle>
+<h1 class="mb-4">概览</h1>
+<div class="row">
+    <div class="col-sm-4">
+        <StatusCard Title="爬虫状态" IconName="robot" Status="已开启"></StatusCard>
+    </div>
+    <div class="col-sm-4">
+        <StatusCard Title="Steam 市场" TitleColor="@SteamTitleColor" IconName="steam" Status="@SteamStatus"><a role="button" style="opacity: 0.5;" @onclick="RefreshSteamStatus">刷新</a></StatusCard>
+    </div>
+    <div class="col-sm-4">
+        <StatusCard Title="网易 BUFF 市场" TitleColor="@BuffTitleColor" IconName="game" Status="@BuffStatus"><a role="button" style="opacity: 0.5;" @onclick="RefreshBuffStatus">刷新</a></StatusCard>
+    </div>
+</div>
+
+@code {
+    private string SteamStatus { get; set; } = "测试中...";
+    private string BuffStatus { get; set; } = "测试中...";
+    private string SteamTitleColor { get; set; } = "text-success";
+    private string BuffTitleColor { get; set; } = "text-success";
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await UpdateBuffStatus();
+            await UpdateSteamStatus();
+        }
+    }
+
+    private async Task<bool> CheckSteamStatus()
+    {
+        try
+        {
+            //Console.WriteLine("正在检测 steam 社区连通性...");
+            bool isOk = false;
+            await httpService.GetWithCookieAsync("https://steamcommunity.com/market/", Configuration.SteamCookies, 8, async result =>
+             {
+             //判断是否可以访问 steam 社区
+             Regex regex = new Regex(@"(?<=<span id=""market_buynow_dialog_myaccountname"">).+(?=<\/span>)");
+                 var match = regex.Matches(await result.Content.ReadAsStringAsync());
+                 if (match.Count() != 0) isOk = true;
+                 return;
+             });
+            return isOk;
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine("访问 steam 社区出现错误，是否已开启代理？");
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    private async Task<bool> CheckBuffStatus()
+    {
+        bool isOk = false;
+        try
+        {
+            await httpService.GetWithCookieAsync("https://buff.163.com/api/asset/get_brief_asset", new System.Net.Cookie("session", Configuration.BuffSession), async result =>
+            {
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var j = JObject.Parse(await result.Content.ReadAsStringAsync());
+                    if(j["code"].ToString() != "Login Required") isOk = true;
+                    
+                }
+                return;
+
+            });
+            return isOk;
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    private async Task UpdateSteamStatus()
+    {
+        if (await CheckSteamStatus())
+        {
+            SteamStatus = "连接通过";
+        }
+        else
+        {
+            SteamStatus = "连接失败";
+            SteamTitleColor = "text-danger";
+        }
+        this.StateHasChanged(); //手动提交状态更新
+    }
+
+    private async Task UpdateBuffStatus()
+    {
+        if (await CheckBuffStatus())
+        {
+            BuffStatus = "连接通过";
+        }
+        else
+        {
+            BuffStatus = "连接失败";
+            BuffTitleColor = "text-danger";
+        }
+        this.StateHasChanged(); //手动提交状态更新
+    }
+
+    private async Task RefreshSteamStatus()
+    {
+        SteamStatus = "测试中...";
+        SteamTitleColor = "text-success";
+        await UpdateSteamStatus();
+    }
+
+    private async Task RefreshBuffStatus()
+    {
+        BuffStatus = "测试中...";
+        BuffTitleColor = "text-success";
+        await UpdateBuffStatus();
+    }
+}

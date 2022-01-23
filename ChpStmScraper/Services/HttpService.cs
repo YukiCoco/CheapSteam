@@ -146,6 +146,40 @@ namespace ChpStmScraper.Services
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="cookie"></param>
+        /// <param name="timeOut">超时时间</param>
+        /// <param name="next"></param>
+        /// <returns></returns>
+        public async Task GetWithCookieAsync(string url, string cookie, int timeOut, Func<HttpResponseMessage, Task> next)
+        {
+            var cookieContainer = new CookieContainer();
+            var baseUrl = new System.Uri(Helper.GetBaseUrl(url));
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            using (var client = new HttpClient(handler) { BaseAddress = baseUrl })
+            {
+                client.Timeout = TimeSpan.FromSeconds(timeOut);
+                var cookies = StrToCookies(cookie);
+                foreach (var item in cookies)
+                {
+                    try
+                    {
+                        cookieContainer.Add(baseUrl, item);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        continue;
+                    }
+                }
+                var result = await client.GetAsync(url);
+                await next(result);
+            }
+            return;
+        }
+
+        /// <summary>
         /// GET
         /// </summary>
         /// <param name="url"></param>

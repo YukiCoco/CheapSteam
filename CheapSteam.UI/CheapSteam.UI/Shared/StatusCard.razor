@@ -1,0 +1,24 @@
+﻿<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title fs-2 mb-3 @TitleColor">@Status</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Title @ChildContent</h6>
+        <img src="/icons/@(IconName).svg" class="dashboard-icon" />
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Status { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string? TitleColor { get; set; } = "text-success";
+
+    [Parameter]
+    public string IconName { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

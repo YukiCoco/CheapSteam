@@ -2,9 +2,15 @@
 {
     public class ScraperService
     {
+        private ChpStmScraper.Program scriper;
         public ScraperService()
         {
-            ChpStmScraper.Program.Start();
+            scriper = new ChpStmScraper.Program();
+        }
+
+       public void Start()
+        {
+            scriper.Start();
         }
     }
 }

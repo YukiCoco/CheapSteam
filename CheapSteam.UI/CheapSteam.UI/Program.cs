@@ -2,6 +2,7 @@ using CheapSteam.UI.Data;
 using ChpStmScraper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using CheapSteam.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ else
 {
     builder.Services.AddSingleton<ChpStmScraper.Services.HttpService>();
 }
+builder.Services.AddSingleton(new ScraperService());
 
 
 var app = builder.Build();

@@ -1,13 +1,17 @@
 ﻿@page "/"
 @using System.Text.RegularExpressions
-@using System.Diagnostics
 @inject ChpStmScraper.Services.HttpService httpService
+@inject CheapSteam.UI.Services.ScraperService scraperService
 
 <PageTitle>Index</PageTitle>
 <h1 class="mb-4">概览</h1>
 <div class="row">
     <div class="col-sm-4">
-        <StatusCard Title="爬虫状态" IconName="robot" Status="已开启"></StatusCard>
+        <StatusCard Title="爬虫状态" IconName="robot" Status="@ScraperStatus">
+            <div style="display: inline;">
+                <Switch  @bind-Checked="switchValue" OnClick="EnabledSwitch" Control/>
+            </div>
+        </StatusCard>
     </div>
     <div class="col-sm-4">
         <StatusCard Title="Steam 市场" TitleColor="@SteamTitleColor" IconName="steam" Status="@SteamStatus"><a role="button" style="opacity: 0.5;" @onclick="RefreshSteamStatus">刷新</a></StatusCard>
@@ -17,11 +21,11 @@
     </div>
 </div>
 <div class="card mt-4 mb-4">
-  <div class="card-header d-flex justify-content-between">
-    Log
-    <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>
-  </div>
-  <div class="card-body" style="height: 20em">
+    <div class="card-header d-flex justify-content-between">
+        Log
+        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>
+    </div>
+    <div class="card-body" style="height: 20em">
         @if (LogQueue == null)
         {
             <p class="card-text mb-1">loading...</p>
@@ -33,14 +37,17 @@
                 <p class="card-text mb-1">@item</p>
             }
         }
-  </div>
+    </div>
 </div>
 
 @code {
+    private string ScraperStatus => switchValue ? "已启动" : "未启动";
     private string SteamStatus { get; set; } = "测试中...";
     private string BuffStatus { get; set; } = "测试中...";
     private string SteamTitleColor { get; set; } = "text-success";
     private string BuffTitleColor { get; set; } = "text-success";
+    private static bool switchValue { get; set; } = false;
+    private static bool isLoading = false;
     private Queue<string>? LogQueue;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -92,8 +99,8 @@
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var j = JObject.Parse(await result.Content.ReadAsStringAsync());
-                    if(j["code"].ToString() != "Login Required") isOk = true;
-                    
+                    if (j["code"].ToString() != "Login Required") isOk = true;
+
                 }
                 return;
 
@@ -105,6 +112,18 @@
             Console.WriteLine(ex.Message);
             return false;
         }
+    }
+
+    private async Task EnabledSwitch()
+    {
+        isLoading = !isLoading;
+        if(!switchValue)
+        {
+            //开启爬虫
+            scraperService.Start();
+        }
+        switchValue = !switchValue;
+        return;  
     }
 
     private async Task UpdateSteamStatus()

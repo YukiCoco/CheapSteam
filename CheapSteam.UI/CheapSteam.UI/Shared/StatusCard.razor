@@ -1,7 +1,11 @@
 ﻿<div class="card shadow-sm">
     <div class="card-body">
         <h5 class="card-title fs-2 mb-3 @TitleColor">@Status</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@Title @ChildContent</h6>
+        <h6 class="card-subtitle mb-1 text-muted d-flex" style="align-items: center; height: 24px;">
+            <span style="margin-right: 10px">
+                @Title
+            </span>
+            @ChildContent</h6>
         <img src="/icons/@(IconName).svg" class="dashboard-icon" />
     </div>
 </div>

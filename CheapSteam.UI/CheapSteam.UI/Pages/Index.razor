@@ -9,7 +9,7 @@
     <div class="col-sm-4">
         <StatusCard Title="爬虫状态" IconName="robot" Status="@ScraperStatus">
             <div style="display: inline;">
-                <Switch  @bind-Checked="switchValue" OnClick="EnabledSwitch" Control/>
+                <Switch  @bind-Checked="switchValue" OnClick="EnabledSwitch" Control Loading="@isLoading"/>
             </div>
         </StatusCard>
     </div>
@@ -22,10 +22,10 @@
 </div>
 <div class="card mt-4 mb-4">
     <div class="card-header d-flex justify-content-between">
-        Log
+        <h5 class="card-title">日志</h5>
         <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>
     </div>
-    <div class="card-body" style="height: 20em">
+    <div class="card-body" style="height: 40em">
         @if (LogQueue == null)
         {
             <p class="card-text mb-1">loading...</p>
@@ -49,20 +49,27 @@
     private static bool switchValue { get; set; } = false;
     private static bool isLoading = false;
     private Queue<string>? LogQueue;
+    private Timer refreshTimer;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        LogQueue = new Queue<string>();
         if (firstRender)
         {
             await UpdateBuffStatus();
             await UpdateSteamStatus();
+            LogQueue = scraperService.Logs;
+            refreshTimer = new Timer(state =>
+            {
+                //自动刷新日志界面
+                this.InvokeAsync(() => this.StateHasChanged());
+            });
+            refreshTimer.Change(0, 2500);
         }
     }
 
     private void UpdateLog()
     {
-        //LogQueue.Enqueue("正在查询第1页，物品名：M4A1 消音型 | 机械工业 (略有磨损)");
+        this.StateHasChanged();
     }
 
     private async Task<bool> CheckSteamStatus()
@@ -116,14 +123,12 @@
 
     private async Task EnabledSwitch()
     {
-        isLoading = !isLoading;
-        if(!switchValue)
-        {
-            //开启爬虫
-            scraperService.Start();
-        }
+        isLoading = true;
+        if (switchValue == false) scraperService.Start();
+        else if(switchValue) scraperService.Stop();
         switchValue = !switchValue;
-        return;  
+        isLoading = false;
+        return;
     }
 
     private async Task UpdateSteamStatus()

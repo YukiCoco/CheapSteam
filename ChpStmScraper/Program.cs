@@ -16,8 +16,10 @@ namespace ChpStmScraper
     public class Program
     {
         public Timer timer;
-        public Program()
+        private Queue<string> logs;
+        public Program(Queue<string> _logs)
         {
+            logs = _logs;
             timer = new Timer(state =>
             {
                 while (currentSyncThread < Configuration.MaxThread)
@@ -32,7 +34,7 @@ namespace ChpStmScraper
                         }
                         if (pageNum == maxPageNum)
                         {
-                            //达到查询页面上限
+                            //达到查询页面上限，返回第1页
                             pageNum = 1;
                         }
                     }
@@ -176,6 +178,8 @@ namespace ChpStmScraper
                                             }
                                             context.SaveChanges();
                                             Console.WriteLine($"正在查询第{currentPageNum}页，物品名：{item.Name}");
+                                            logs.Enqueue($"正在查询第{currentPageNum}页，物品名：{item.Name}");
+                                            while(logs.Count > 20)  logs.Dequeue();
                                         }
                                     });
                                 }
@@ -269,7 +273,7 @@ namespace ChpStmScraper
         }
         public void Start()
         {
-            CheckIfSteamCommunity();
+            //CheckIfSteamCommunity();
             var baseAddress = new Uri(Helper.GetBaseUrl(Configuration.BuffUrl));
             //定时检查线程数
             timer.Change(0, 5000);

@@ -60,8 +60,8 @@
             LogQueue = scraperService.Logs;
             refreshTimer = new Timer(state =>
             {
-                //自动刷新日志界面
-                this.InvokeAsync(() => this.StateHasChanged());
+            //自动刷新日志界面
+            this.InvokeAsync(() => this.StateHasChanged());
             });
             refreshTimer.Change(0, 2500);
         }

@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddAntDesign();
 if (!string.IsNullOrEmpty(Configuration.ProxyUrl))
 {
@@ -19,7 +18,8 @@ else
 {
     builder.Services.AddSingleton<ChpStmScraper.Services.HttpService>();
 }
-builder.Services.AddSingleton(new ScraperService());
+builder.Services.AddDbContext<ScraperDbContext>(ServiceLifetime.Singleton);
+builder.Services.AddSingleton<ScraperService>();
 
 
 var app = builder.Build();

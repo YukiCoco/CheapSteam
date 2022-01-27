@@ -1,120 +1,138 @@
 ﻿@page "/fetchdata"
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>数据查询</PageTitle>
 
 @using CheapSteam.UI.Data
 @using System.ComponentModel
 @using AntDesign.TableModels
-@inject WeatherForecastService ForecastService
+@inject ScraperDbContext DataContext
 
-<h1>Weather forecast</h1>
+<h1>数据查询</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
-
-@if (forecasts == null)
+@if (goods == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <Table @ref="table"
-           TItem="WeatherForecast"
-           DataSource="@forecasts"
-           Total="_total"
-           @bind-PageIndex="_pageIndex"
-           @bind-PageSize="_pageSize"
-           @bind-SelectedRows="selectedRows"
-           OnChange="OnChange"
-    >
-        <Selection Key="@(context.Id.ToString())" />
-        <Column @bind-Field="@context.Id" Sortable />
-        <Column @bind-Field="@context.Date" Format="yyyy-MM-dd" Sortable />
-        <Column @bind-Field="@context.TemperatureC" Sortable />
-        <Column Title="Temp. (F)" Field="@context.TemperatureF" />
-        <Column Title="Hot" Field="@context.Hot">
-            <Switch @bind-Value="@context.Hot"></Switch>
-        </Column>
-        <Column @bind-Field="@context.Summary" Sortable />
-        <ActionColumn>
-            <Space>
-                <SpaceItem><Button Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>
-            </Space>
-        </ActionColumn>
-    </Table>
+    <Card Class="shadow-sm mb-3" Title="筛选器">
+        <Body>
+            <div class="d-flex">
+                <Checkbox @bind-Checked="showBuffSellPrice">
+                    BUFF 出售价
+                </Checkbox>
+                <Checkbox @bind-Checked="showBuffBuyPrice">
+                    BUFF 收购价
+                </Checkbox>
+                <Checkbox @bind-Checked="showSteamSellPrice">
+                    Steam 出售价
+                </Checkbox>
+                <Checkbox @bind-Checked="showSteamBuyPrice">
+                    Steam 收购价
+                </Checkbox>
+                <Checkbox @bind-Checked="showSteamBuyRadio">
+                    求购价比例
+                </Checkbox>
+                <Checkbox @bind-Checked="showSteamSellRadio">
+                    出售价比例
+                </Checkbox>
+                <Checkbox @bind-Checked="showSteamSellNum">
+                    Steam 求购数
+                </Checkbox>
+                <Checkbox @bind-Checked="showBuffSellNum">
+                    BUFF 收购数
+                </Checkbox>
+                <Checkbox @bind-Checked="showUpdateTime">
+                    更新时间
+                </Checkbox>
+            </div>
+        </Body>
+    </Card>
+    <Card Class="shadow-sm" Title="表单">
+        <Extra>
+            <Popconfirm Title="确定要清空表单?"
+                    OnConfirm="Confirm"
+                    OkText="确定"
+                    CancelText="取消">
+                <a>清空表单</a>
+            </Popconfirm>
+        </Extra>
+        <Body>
+            <Table Class="fix-pagination" @ref="table"
+               TItem="Goods"
+               DataSource="@goods"
+               Total="_total"
+               @bind-PageIndex="_pageIndex"
+               @bind-PageSize="_pageSize"
+               @bind-SelectedRows="selectedRows">
+                <Column @bind-Field="@context.Name" Title="名称" />
+                <Column @bind-Field="@context.BuffSellPrice" Sortable Title="BUFF 出售价" Hidden="@(!showBuffSellPrice)" Filterable />
+                <Column @bind-Field="@context.BuffBuyPrice" Sortable Title="BUFF 收购价" Hidden="@(!showBuffBuyPrice)" Filterable />
+                <Column @bind-Field="@context.SteamSellPrice" Sortable Title="Steam 出售价" Hidden="@(!showSteamSellPrice)" Filterable />
+                <Column @bind-Field="@context.SteamBuyPrice" Sortable Title="Steam 收购价" Hidden="@(!showSteamBuyPrice)" Filterable />
+                <Column @bind-Field="@context.SteamBuyRadio" Sortable Title="求购价比例" Hidden="@(!showSteamBuyRadio)" Filterable />
+                <Column @bind-Field="@context.SteamSellRadio" Sortable Title="出售价比例" Hidden="@(!showSteamSellRadio)" Filterable />
+                <Column @bind-Field="@context.SteamSellNum" Sortable Title="Steam 求购数" Hidden="@(!showSteamSellNum)" Filterable />
+                <Column @bind-Field="@context.BuffSellNum" Sortable Title="BUFF 收购数" Hidden="@(!showBuffSellNum)" Filterable />
+                <Column @bind-Field="@context.UpdateTime" Format="MM-dd hh:mm" Sortable Title="更新时间" Hidden="@(!showUpdateTime)" Filterable />
+            </Table>
+        </Body>
+    </Card>
 }
 
 @using System.Text.Json;
+@using ChpStmScraper.Models
+@using EFCore.BulkExtensions
 @code {
 
-        WeatherForecast[] forecasts;
+    Goods[] goods;
 
-        IEnumerable<WeatherForecast> selectedRows;
-        ITable table;
+    IEnumerable<Goods> selectedRows;
+    ITable table;
 
-        int _pageIndex = 1;
-        int _pageSize = 10;
-        int _total = 0;
+    int _pageIndex = 1;
+    int _pageSize = 10;
+    int _total = 0;
+    bool showBuffSellPrice = true;
+    bool showBuffBuyPrice = false;
+    bool showSteamSellPrice = true;
+    bool showSteamBuyPrice = false;
+    bool showSteamBuyRadio = true;
+    bool showSteamSellRadio = true;
+    bool showUpdateTime = true;
+    bool showBuffSellNum = false;
+    bool showSteamSellNum = false;
+
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await GetForecastAsync(1, 50);
-        _total = 50;
-    }
-
-    public class WeatherForecast
-    {
-        public int Id { get; set; }
-
-        [DisplayName("Date")]
-        public DateTime? Date { get; set; }
-
-        [DisplayName("Temp. (C)")]
-        public int TemperatureC { get; set; }
-
-        [DisplayName("Summary")]
-        public string Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-        public bool Hot { get; set; }
-    }
-
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-    public async Task OnChange(QueryModel<WeatherForecast> queryModel)
-    {
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(queryModel));
-    }
-
-    public Task<WeatherForecast[]> GetForecastAsync(int pageIndex, int pageSize)
-    {
-        var rng = new Random();
-        return Task.FromResult(Enumerable.Range((pageIndex - 1) * pageSize + 1, pageSize).Select(index =>
+        await Task.Run(() =>
         {
-            var temperatureC = rng.Next(-20, 55);
-            return new WeatherForecast
+            var goodsQuerry = DataContext.Goods.Where(g => g.BuffSellPrice <= Configuration.MaxSellPrice
+            && g.BuffSellNum >= Configuration.MinSellCount
+            && g.BuffSellPrice >= Configuration.MinSellPrice);
+        //.OrderBy(g => g.SteamBuyRadio).Take(num);
+        _total = goodsQuerry.Count();
+            goods = goodsQuerry.ToArray();
+        });
+
+    }
+    private static object o = new object();
+
+    private async Task Confirm()
+    {
+        await Task.Run(() =>
+        {
+            lock (o)
             {
-                Id = index,
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = temperatureC,
-                Summary = Summaries[rng.Next(Summaries.Length)],
-                Hot = temperatureC > 30,
-            };
-        }).ToArray());
-    }
-
-    public void RemoveSelection(int id)
-    {
-        var selected = selectedRows.Where(x => x.Id != id);
-        selectedRows = selected;
-    }
-
-    private void Delete(int id)
-    {
-        forecasts = forecasts.Where(x => x.Id != id).ToArray();
-        _total = forecasts.Length;
+                DataContext.Truncate<Goods>();
+                DataContext.BulkSaveChanges();
+            }
+            this.InvokeAsync(() =>
+            {
+                this.StateHasChanged();
+            });
+        });
+        this.StateHasChanged();
     }
 }

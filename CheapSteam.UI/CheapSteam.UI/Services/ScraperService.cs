@@ -1,13 +1,15 @@
-﻿namespace CheapSteam.UI.Services
+﻿using ChpStmScraper;
+
+namespace CheapSteam.UI.Services
 {
     public class ScraperService
     {
         private ChpStmScraper.Program scriper;
         public Queue<string> Logs { get; private set; }
-        public ScraperService()
+        public ScraperService(ScraperDbContext dbContext)
         {
             Logs = new Queue<string>();
-            scriper = new ChpStmScraper.Program(Logs);
+            scriper = new ChpStmScraper.Program(Logs, dbContext);
         }
 
        public void Start()

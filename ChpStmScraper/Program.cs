@@ -17,9 +17,12 @@ namespace ChpStmScraper
     {
         public Timer timer;
         private Queue<string> logs;
-        public Program(Queue<string> _logs)
+        private ScraperDbContext context;
+        private bool isPause = false;
+        public Program(Queue<string> _logs, ScraperDbContext _context)
         {
             logs = _logs;
+            context = _context;
             timer = new Timer(state =>
             {
                 while (currentSyncThread < Configuration.MaxThread)
@@ -44,7 +47,7 @@ namespace ChpStmScraper
                     {
                         httpService = new HttpService(Configuration.ProxyUrl);
                     }
-                    httpService.GetWithCookie(Configuration.BuffUrl + $"&page_num={pageNum}", new Cookie("session", Configuration.BuffSession), result =>
+                    httpService.GetWithCookie(Configuration.BuffUrl + $"?game={Configuration.GameKind.ToString().ToLower()}&min_price={Configuration.MinSellPrice}&max_price={Configuration.MaxSellPrice}&page_num={pageNum}", new Cookie("session", Configuration.BuffSession), result =>
                     {
                         try
                         {
@@ -61,7 +64,6 @@ namespace ChpStmScraper
                         {
                             HttpService httpService = new HttpService();
                             var jsonObj = JObject.Parse(result.Content.ReadAsStringAsync().Result);
-                            ScraperDbContext context = new ScraperDbContext();
                             //页面数修改
                             lock (o4)
                             {
@@ -69,6 +71,10 @@ namespace ChpStmScraper
                             }
                             foreach (var jItem in jsonObj["data"]["items"])
                             {
+                                lock(o6)
+                                {
+                                    while(isPause) Thread.Sleep(TimeSpan.FromSeconds(2));
+                                }
                                 var name = Helper.UnicodeToString(jItem["name"].ToString());
                                 lock (o5)
                                 {
@@ -230,6 +236,7 @@ namespace ChpStmScraper
         private static object o3 = new object();
         private static object o4 = new object();
         private static object o5 = new object();
+        private static object o6 = new object();
         #endregion
         private int pageNum = 0;
         private int maxPageNum = 2333;
@@ -273,8 +280,7 @@ namespace ChpStmScraper
         }
         public void Start()
         {
-            //CheckIfSteamCommunity();
-            var baseAddress = new Uri(Helper.GetBaseUrl(Configuration.BuffUrl));
+            isPause = false;
             //定时检查线程数
             timer.Change(0, 5000);
         }
@@ -282,6 +288,7 @@ namespace ChpStmScraper
         public void Stop()
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
+            isPause = true;
         }
     }
 }

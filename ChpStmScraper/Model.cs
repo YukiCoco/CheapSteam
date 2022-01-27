@@ -7,8 +7,8 @@ namespace ChpStmScraper.Models
     {
         public enum GameKind
         {
-            DOTA2,
-            CSGO
+            DOTA2 = 1,
+            CSGO = 2,
         }
         public GameKind Kind { get; set; }
         [Key]

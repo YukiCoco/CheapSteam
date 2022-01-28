@@ -25,13 +25,13 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj
     - name: Publish Windows x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime win-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ env.RELEASE_VERSION }}/CheapSteam-${{ env.RELEASE_VERSION }}-win-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime win-x64 -p:PublishSingleFile=true --self-contained true -o ./CheapSteam-${{ env.RELEASE_VERSION }}-win-x64 -c Release
     - name: Publish OSX x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime osx-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ env.RELEASE_VERSION }}/CheapSteam-${{ env.RELEASE_VERSION }}-osx-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime osx-x64 -p:PublishSingleFile=true --self-contained true -o ./CheapSteam-${{ env.RELEASE_VERSION }}-osx-x64 -c Release
     - name: Publish Linux x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime linux-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ env.RELEASE_VERSION }}/CheapSteam-${{ env.RELEASE_VERSION }}-linux-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime linux-x64 -p:PublishSingleFile=true --self-contained true -o ./CheapSteam-${{ env.RELEASE_VERSION }}-linux-x64 -c Release
     - name: zip files
-      run: zip -r CheapSteam-${{ env.RELEASE_VERSION }}-win-x64.zip ./bin/Release/WebApi/${{ env.RELEASE_VERSION }}/CheapSteam-${{ env.RELEASE_VERSION }}-win-x64 && zip -r CheapSteam-${{ env.RELEASE_VERSION }}-osx-x64.zip ./bin/Release/WebApi/${{ env.RELEASE_VERSION }}/CheapSteam-${{ env.RELEASE_VERSION }}-osx-x64 && zip -r CheapSteam-${{ env.RELEASE_VERSION }}-linux-x64.zip ./bin/Release/WebApi/${{ env.RELEASE_VERSION }}/CheapSteam-${{ env.RELEASE_VERSION }}-linux-x64
+      run: zip -r CheapSteam-${{ env.RELEASE_VERSION }}-win-x64.zip ./CheapSteam-${{ env.RELEASE_VERSION }}-win-x64 && zip -r CheapSteam-${{ env.RELEASE_VERSION }}-osx-x64.zip ./CheapSteam-${{ env.RELEASE_VERSION }}-osx-x64 && zip -r CheapSteam-${{ env.RELEASE_VERSION }}-linux-x64.zip ./CheapSteam-${{ env.RELEASE_VERSION }}-linux-x64
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

@@ -19,8 +19,9 @@ namespace ChpStmScraper
         private Queue<string> logs;
         private ScraperDbContext context;
         private bool isPause = false;
-        public Program(Queue<string> _logs, ScraperDbContext _context)
+        public Program(Queue<string> _logs, ScraperDbContext _context, object contextLock)
         {
+            o2 = contextLock;
             logs = _logs;
             context = _context;
             timer = new Timer(state =>
@@ -71,9 +72,17 @@ namespace ChpStmScraper
                             }
                             foreach (var jItem in jsonObj["data"]["items"])
                             {
-                                lock(o6)
+                                lock(o)
                                 {
-                                    while(isPause) Thread.Sleep(TimeSpan.FromSeconds(2));
+                                    if(isPause)
+                                    {
+                                        pageNum--;
+                                        lock (o3)
+                                        {
+                                            currentSyncThread--;
+                                        }
+                                        return;
+                                    }
                                 }
                                 var name = Helper.UnicodeToString(jItem["name"].ToString());
                                 lock (o5)
@@ -232,11 +241,10 @@ namespace ChpStmScraper
 
         #region 线程锁
         private static object o = new object();
-        private static object o2 = new object();
+        private object o2;
         private static object o3 = new object();
         private static object o4 = new object();
         private static object o5 = new object();
-        private static object o6 = new object();
         #endregion
         private int pageNum = 0;
         private int maxPageNum = 2333;

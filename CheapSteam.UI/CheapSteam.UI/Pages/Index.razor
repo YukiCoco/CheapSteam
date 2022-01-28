@@ -2,14 +2,15 @@
 @using System.Text.RegularExpressions
 @inject ChpStmScraper.Services.HttpService httpService
 @inject CheapSteam.UI.Services.ScraperService scraperService
+@inject MessageService _message
 
-<PageTitle>Index</PageTitle>
+<PageTitle>首页</PageTitle>
 <h1 class="mb-4">概览</h1>
 <div class="row">
     <div class="col-sm-4">
         <StatusCard Title="爬虫状态" IconName="robot" Status="@ScraperStatus">
             <div style="display: inline;">
-                <Switch  @bind-Checked="switchValue" OnClick="EnabledSwitch" Control Loading="@isLoading"/>
+                <Switch  @bind-Checked="SwitchValue" OnClick="EnabledSwitch" Control Loading="@isLoading"/>
             </div>
         </StatusCard>
     </div>
@@ -23,7 +24,7 @@
 <div class="card mt-4 mb-4">
     <div class="card-header d-flex justify-content-between">
         <h5 class="card-title">日志</h5>
-        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>
+        @*<button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>*@
     </div>
     <div class="card-body" style="height: 40em">
         @if (LogQueue == null)
@@ -41,12 +42,12 @@
 </div>
 
 @code {
-    private string ScraperStatus => switchValue ? "已启动" : "未启动";
+    private string ScraperStatus => SwitchValue ? "已启动" : "未启动";
     private string SteamStatus { get; set; } = "测试中...";
     private string BuffStatus { get; set; } = "测试中...";
     private string SteamTitleColor { get; set; } = "text-success";
     private string BuffTitleColor { get; set; } = "text-success";
-    private static bool switchValue { get; set; } = false;
+    public static bool SwitchValue { get; set; } = false;
     private static bool isLoading = false;
     private Queue<string>? LogQueue;
     private Timer refreshTimer;
@@ -55,14 +56,14 @@
     {
         if (firstRender)
         {
-            await UpdateBuffStatus();
-            await UpdateSteamStatus();
-            LogQueue = scraperService.Logs;
             refreshTimer = new Timer(state =>
             {
             //自动刷新日志界面
             this.InvokeAsync(() => this.StateHasChanged());
             });
+            LogQueue = scraperService.Logs;
+            await UpdateBuffStatus();
+            await UpdateSteamStatus();
             refreshTimer.Change(0, 2500);
         }
     }
@@ -77,6 +78,7 @@
         try
         {
             //Console.WriteLine("正在检测 steam 社区连通性...");
+            if (Configuration.SteamCookies == null) return false;
             bool isOk = false;
             await httpService.GetWithCookieAsync("https://steamcommunity.com/market/", Configuration.SteamCookies, 8, async result =>
              {
@@ -98,6 +100,7 @@
 
     private async Task<bool> CheckBuffStatus()
     {
+        if (Configuration.BuffSession == null) return false;
         bool isOk = false;
         try
         {
@@ -124,9 +127,24 @@
     private async Task EnabledSwitch()
     {
         isLoading = true;
-        if (switchValue == false) scraperService.Start();
-        else if(switchValue) scraperService.Stop();
-        switchValue = !switchValue;
+        if (SwitchValue == false)
+        {
+            if (!await CheckSteamStatus())
+            {
+                await _message.Error("Steam 社区连通性检测失败");
+                isLoading = false;
+                return;
+            }
+            else if (!await CheckBuffStatus())
+            {
+                await _message.Error("BUFF 市场连通性检测失败");
+                isLoading = false;
+                return;
+            }
+            scraperService.Start();
+        }
+        else if (SwitchValue) scraperService.Stop();
+        SwitchValue = !SwitchValue;
         isLoading = false;
         return;
     }

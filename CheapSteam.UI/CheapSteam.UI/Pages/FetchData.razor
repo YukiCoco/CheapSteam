@@ -17,7 +17,7 @@ else
 {
     <Card Class="shadow-sm mb-3" Title="筛选器">
         <Body>
-            <div class="d-flex">
+            <div class="d-flex" style="flex-wrap: wrap;">
                 <Checkbox @bind-Checked="showBuffSellPrice">
                     BUFF 出售价
                 </Checkbox>
@@ -48,8 +48,9 @@ else
             </div>
         </Body>
     </Card>
-    <Card Class="shadow-sm" Title="表单">
+    <Card Class="shadow-sm" Title="数据">
         <Extra>
+                <a @onclick="RefreshTable">刷新</a>
             <Popconfirm Title="确定要清空表单?"
                     OnConfirm="Confirm"
                     OkText="确定"
@@ -102,20 +103,28 @@ else
     bool showUpdateTime = true;
     bool showBuffSellNum = false;
     bool showSteamSellNum = false;
+    Timer refreshTimer;
 
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() =>
-        {
-            var goodsQuerry = DataContext.Goods.Where(g => g.BuffSellPrice <= Configuration.MaxSellPrice
-            && g.BuffSellNum >= Configuration.MinSellCount
-            && g.BuffSellPrice >= Configuration.MinSellPrice);
-        //.OrderBy(g => g.SteamBuyRadio).Take(num);
-        _total = goodsQuerry.Count();
-            goods = goodsQuerry.ToArray();
-        });
+        await RefreshTable();
+    }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            refreshTimer = new Timer(state =>
+            {
+            //自动刷新日志界面
+            this.InvokeAsync(async () =>
+            {
+                await RefreshTable();
+            });
+            });
+            if(Index.SwitchValue) refreshTimer.Change(0, 5000);
+        }
     }
     private static object o = new object();
 
@@ -125,14 +134,28 @@ else
         {
             lock (o)
             {
-                DataContext.Truncate<Goods>();
-                DataContext.BulkSaveChanges();
-            }
-            this.InvokeAsync(() =>
-            {
-                this.StateHasChanged();
-            });
+                DataContext.Goods.RemoveRange(DataContext.Goods.ToArray());
+                DataContext.SaveChanges();
+            //DataContext.Truncate<Goods>();
+            //DataContext.BulkSaveChanges();
+        }
         });
-        this.StateHasChanged();
+        await RefreshTable();
+    }
+    private async Task RefreshTable()
+    {
+        await Task.Run(() =>
+        {
+            lock (Services.ScraperService.ContextLock)
+            {
+                var goodsQuerry = DataContext.Goods.Where(g => g.BuffSellPrice <= Configuration.MaxSellPrice
+                && g.BuffSellNum >= Configuration.MinSellCount
+                && g.BuffSellPrice >= Configuration.MinSellPrice);
+                //.OrderBy(g => g.SteamBuyRadio).Take(num);
+                _total = goodsQuerry.Count();
+                goods = goodsQuerry.ToArray();
+            }
+            this.InvokeAsync(() => this.StateHasChanged());
+        });
     }
 }

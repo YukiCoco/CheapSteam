@@ -19,13 +19,13 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj
     - name: Publish Windows x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime win-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ github.ref }}/CheapSteam-${{ github.ref }}-win-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime win-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${GITHUB_REF#refs/*/}/CheapSteam-${GITHUB_REF#refs/*/}-win-x64 -c Release
     - name: Publish OSX x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime osx-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ github.ref }}/CheapSteam-${{ github.ref }}-osx-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime osx-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${GITHUB_REF#refs/*/}/CheapSteam-${GITHUB_REF#refs/*/}-osx-x64 -c Release
     - name: Publish Linux x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime linux-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ github.ref }}/CheapSteam-${{ github.ref }}-linux-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime linux-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${GITHUB_REF#refs/*/}/CheapSteam-${GITHUB_REF#refs/*/}-linux-x64 -c Release
     - name: zip files
-      run: zip -r CheapSteam-${{ github.ref }}-win-x64.zip ./bin/Release/WebApi/${{ github.ref }}/CheapSteam-${{ github.ref }}-win-x64 && zip -r CheapSteam-${{ github.ref }}-osx-x64.zip ./bin/Release/WebApi/${{ github.ref }}/CheapSteam-${{ github.ref }}-osx-x64 && zip -r CheapSteam-${{ github.ref }}-linux-x64.zip ./bin/Release/WebApi/${{ github.ref }}/CheapSteam-${{ github.ref }}-linux-x64
+      run: zip -r CheapSteam-${GITHUB_REF#refs/*/}-win-x64.zip ./bin/Release/WebApi/${GITHUB_REF#refs/*/}/CheapSteam-${GITHUB_REF#refs/*/}-win-x64 && zip -r CheapSteam-${GITHUB_REF#refs/*/}-osx-x64.zip ./bin/Release/WebApi/${GITHUB_REF#refs/*/}/CheapSteam-${GITHUB_REF#refs/*/}-osx-x64 && zip -r CheapSteam-${GITHUB_REF#refs/*/}-linux-x64.zip ./bin/Release/WebApi/${GITHUB_REF#refs/*/}/CheapSteam-${GITHUB_REF#refs/*/}-linux-x64
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -43,8 +43,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./CheapSteam-${{ github.ref }}-win-x64.zip
-        asset_name: CheapSteam-${{ github.ref }}-win-x64.zip
+        asset_path: ./CheapSteam-${GITHUB_REF#refs/*/}-win-x64.zip
+        asset_name: CheapSteam-${GITHUB_REF#refs/*/}-win-x64.zip
         asset_content_type: application/zip
     - name: Upload Release Asset
       id: upload-release-asset-2 
@@ -53,8 +53,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./CheapSteam-${{ github.ref }}-osx-x64.zip
-        asset_name: CheapSteam-${{ github.ref }}-osx-x64.zip
+        asset_path: ./CheapSteam-${GITHUB_REF#refs/*/}-osx-x64.zip
+        asset_name: CheapSteam-${GITHUB_REF#refs/*/}-osx-x64.zip
         asset_content_type: application/zip
     - name: Upload Release Asset
       id: upload-release-asset-3 
@@ -63,6 +63,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./CheapSteam-${{ github.ref }}-linux-x64.zip
-        asset_name: CheapSteam-${{ github.ref }}-linux-x64.zip
+        asset_path: ./CheapSteam-${GITHUB_REF#refs/*/}-linux-x64.zip
+        asset_name: CheapSteam-${GITHUB_REF#refs/*/}-linux-x64.zip
         asset_content_type: application/zip

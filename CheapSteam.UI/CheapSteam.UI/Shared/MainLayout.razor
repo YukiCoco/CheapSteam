@@ -7,13 +7,20 @@
         <NavMenu />
     </div>
 
-    <main>
+    <main class="d-flex flex-column">
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a href="https://github.com/YukiCoco/CheapSteam" target="_blank">关于</a>
         </div>
 
-        <article class="content px-4 container">
+        <article class="content px-4 container mb-3">
             @Body
         </article>
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top mt-auto">
+        <div class="container px-4">
+            <div class="col-md-4 d-flex align-items-center">
+              <span class="text-muted">© 2020-2022, <a href="https://kurisu.moe">Kurisu</a> </span>
+            </div>
+            </div>
+          </footer>
     </main>
 </div>

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System.Linq;
 using Microsoft.Extensions.Configuration.Json;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace ChpStmScraper
 {
@@ -89,7 +90,14 @@ namespace ChpStmScraper
         public static string ProxyUrl
         {
             get => configurationRoot["ProxyUrl"];
-            set => configurationRoot["ProxyUrl"] = value;
+            set {
+                configurationRoot["ProxyUrl"] = value;
+                if (!String.IsNullOrEmpty(value))
+                {
+                    if (Uri.IsWellFormedUriString(value, UriKind.Absolute)) HttpClient.DefaultProxy = new System.Net.WebProxy(value);
+                }
+                else HttpClient.DefaultProxy = new System.Net.WebProxy();
+            }
         }
 
         /// <summary>
@@ -182,10 +190,10 @@ namespace ChpStmScraper
         }
 
         /// <summary>
-        /// 监听 URL
+        /// 监听端口
         /// </summary>
         /// <value></value>
-        public static string[] ListeningUrls => configurationRoot.GetSection("ListeningUrls").GetChildren().Select(x => x.Value).ToArray();
+        public static int ListenPort => int.TryParse(configurationRoot["ListenPort"], out _) ? int.Parse(configurationRoot["ListenPort"]) : 1272;
 
         public static string GameKind
         {

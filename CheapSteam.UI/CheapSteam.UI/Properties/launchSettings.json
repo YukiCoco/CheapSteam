@@ -10,12 +10,12 @@
   "profiles": {
     "CheapSteam.UI": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7243;http://localhost:5243",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",

@@ -66,7 +66,7 @@ else
                @bind-PageIndex="_pageIndex"
                @bind-PageSize="_pageSize"
                @bind-SelectedRows="selectedRows">
-                <Column @bind-Field="@context.Name" Title="名称" />
+                <Column @bind-Field="@context.Name" Title="名称" Filterable/>
                 <Column @bind-Field="@context.BuffSellPrice" Sortable Title="BUFF 出售价" Hidden="@(!showBuffSellPrice)" Filterable />
                 <Column @bind-Field="@context.BuffBuyPrice" Sortable Title="BUFF 收购价" Hidden="@(!showBuffBuyPrice)" Filterable />
                 <Column @bind-Field="@context.SteamSellPrice" Sortable Title="Steam 出售价" Hidden="@(!showSteamSellPrice)" Filterable />

@@ -192,7 +192,7 @@ namespace ChpStmScraper
                                                 context.Entry<Goods>(querry).CurrentValues.SetValues(item);
                                             }
                                             context.SaveChanges();
-                                            Console.WriteLine($"正在查询第{currentPageNum}页，物品名：{item.Name}");
+                                            //Console.WriteLine($"正在查询第{currentPageNum}页，物品名：{item.Name}");
                                             logs.Enqueue($"正在查询第{currentPageNum}页，物品名：{item.Name}");
                                             while(logs.Count > 20)  logs.Dequeue();
                                         }

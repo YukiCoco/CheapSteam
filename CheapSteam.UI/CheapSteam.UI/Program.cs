@@ -1,4 +1,4 @@
-using CheapSteam.UI.Data;
+锘縰sing CheapSteam.UI.Data;
 using ChpStmScraper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -41,7 +41,10 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-Console.WriteLine($"访问 http://127.0.0.1:{Configuration.ListenPort} 进入程序界面");
-if (!File.Exists("ChpStmScraper.db"))   File.Copy("ChpStmScraper.Template.db", "ChpStmScraper.db");
+if (!File.Exists("ChpStmScraper.db"))
+{
+    File.Copy("ChpStmScraper.Template.db", "ChpStmScraper.db");
+    Console.WriteLine($"璁块棶 http://127.0.0.1:{Configuration.ListenPort}/settings 杩涘叆绋嬪簭閰嶇疆鐣岄潰");
+} else Console.WriteLine($"璁块棶 http://127.0.0.1:{Configuration.ListenPort} 杩涘叆绋嬪簭鐣岄潰");
 
 app.Run();

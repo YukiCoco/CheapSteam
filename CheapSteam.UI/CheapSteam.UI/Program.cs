@@ -42,5 +42,6 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 Console.WriteLine($"访问 http://127.0.0.1:{Configuration.ListenPort} 进入程序界面");
+if (!File.Exists("ChpStmScraper.db"))   File.Copy("ChpStmScraper.Template.db", "ChpStmScraper.db");
 
 app.Run();

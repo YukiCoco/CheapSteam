@@ -2,15 +2,12 @@ name: Publish
 
 on:
   push:
-    branches: [ master ]
-    # Pattern matched against refs/tags
     tags:        
       - 'v*'           # Push events to every tag not containing /
 
     # Pattern matched against refs/tags
 jobs:
   build:
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
     steps:

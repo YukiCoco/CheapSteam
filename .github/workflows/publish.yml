@@ -2,8 +2,10 @@ name: Publish
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+    # Pattern matched against refs/tags
+    tags:        
+      - 'v*'           # Push events to every tag not containing /
 
     # Pattern matched against refs/tags
 jobs:

@@ -20,6 +20,6 @@ jobs:
     - name: go to project dirctory
       run: cd CheapSteam.UI/CheapSteam.UI/
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./CheapSteam.UI.csproj
     - name: Build
-      run: dotnet build .\CheapSteam.UI.csproj --no-restore
+      run: dotnet build ./CheapSteam.UI.csproj --no-restore

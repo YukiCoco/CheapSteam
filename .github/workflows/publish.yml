@@ -1,11 +1,14 @@
-name: Publish to Release
+name: Publish
 
 on:
-  create:
+  push:
+    branches:
+      - master
+
     # Pattern matched against refs/tags
 jobs:
   build:
-    if: github.event_name == 'create' && contains(github.ref, 'refs/tags/')
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
     steps:
@@ -17,9 +20,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj
     - name: Publish Windows x64
-      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime win-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/${{ github.event.ref }}/CheapSteam-${{ github.event.ref }}-win-x64 -c Release
+      run: dotnet publish CheapSteam.UI/CheapSteam.UI/CheapSteam.UI.csproj --runtime win-x64 -p:PublishSingleFile=true --self-contained true -o ./bin/Release/WebApi/latest/CheapSteam-latest-win-x64 -c Release
     - name: zip files
-      run: zip -r CheapSteam-${{ github.event.ref }}-win-x64.zip ./bin/Release/WebApi/${{ github.event.ref }}/CheapSteam-${{ github.event.ref }}-win-x64
+      run: zip -r CheapSteam-latest-win-x64.zip ./bin/Release/WebApi/latest/CheapSteam-latest-win-x64
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -37,6 +40,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./CheapSteam-${{ github.event.ref }}-win-x64.zip
-        asset_name: CheapSteam-${{ github.event.ref }}-win-x64.zip
+        asset_path: ./CheapSteam-latest-win-x64.zip
+        asset_name: CheapSteam-latest-win-x64.zip
         asset_content_type: application/zip

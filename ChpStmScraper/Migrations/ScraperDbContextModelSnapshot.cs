@@ -22,6 +22,14 @@ namespace ChpStmScraper.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SteamMarketID")
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BuffID")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("BuffBuyPrice")
                         .HasColumnType("REAL");
 

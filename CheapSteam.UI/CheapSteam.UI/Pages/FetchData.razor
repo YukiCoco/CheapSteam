@@ -67,6 +67,11 @@ else
                @bind-PageSize="_pageSize"
                @bind-SelectedRows="selectedRows">
                 <Column @bind-Field="@context.Name" Title="名称" Filterable/>
+                <ActionColumn Title="链接">
+                    <a href="https://buff.163.com/goods/@context.BuffID" target="_blank" title="Buff市场">B</a>
+                    <span> | </span>
+                    <a href="https://steamcommunity.com/market/listings/@context.SteamMarketID" target="_blank" title="Steam市场">S</a>
+                </ActionColumn>
                 <Column @bind-Field="@context.BuffSellPrice" Sortable Title="BUFF 出售价" Hidden="@(!showBuffSellPrice)" Filterable />
                 <Column @bind-Field="@context.BuffBuyPrice" Sortable Title="BUFF 收购价" Hidden="@(!showBuffBuyPrice)" Filterable />
                 <Column @bind-Field="@context.SteamSellPrice" Sortable Title="Steam 出售价" Hidden="@(!showSteamSellPrice)" Filterable />

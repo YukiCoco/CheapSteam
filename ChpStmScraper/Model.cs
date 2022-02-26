@@ -14,7 +14,27 @@ namespace ChpStmScraper.Models
         [Key]
         [MaxLength(100)]
         public string Name { get; set; }
+        /// <summary>
+        /// Steam市场ID
+        /// </summary>
+        /// <value></value>
+        [MaxLength(255)]
+        public string SteamMarketID { get; set; }
+        /// <summary>
+        /// Buff市场ID
+        /// </summary>
+        /// <value></value>
+        [MaxLength(100)]
+        public string BuffID { get; set; }
+        /// <summary>
+        /// Steam出售数
+        /// </summary>
+        /// <value></value>
         public int SteamSellNum { get; set; }
+        /// <summary>
+        /// Buff出售数
+        /// </summary>
+        /// <value></value>
         public int BuffSellNum { get; set; }
         public double BuffSellPrice { get; set; }
         /// <summary>

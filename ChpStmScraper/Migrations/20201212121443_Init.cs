@@ -13,6 +13,8 @@ namespace ChpStmScraper.Migrations
                 {
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Kind = table.Column<int>(type: "INTEGER", nullable: false),
+                    SteamMarketID = table.Column<string>(type: "TEXT", nullable: false),
+                    BuffID = table.Column<string>(type: "TEXT", nullable: false),
                     SteamSellNum = table.Column<int>(type: "INTEGER", nullable: false),
                     BuffSellNum = table.Column<int>(type: "INTEGER", nullable: false),
                     BuffSellPrice = table.Column<double>(type: "REAL", nullable: false),

@@ -165,6 +165,8 @@ namespace ChpStmScraper
                                             {
                                                 Kind = jItem["game"].ToString() == "csgo" ? Goods.GameKind.CSGO : Goods.GameKind.DOTA2,
                                                 Name = name,
+                                                SteamMarketID = steamMarketUrl.Replace("https://steamcommunity.com/market/listings/", ""),
+                                                BuffID = jItem["id"].ToString(),
                                                 BuffBuyPrice = Helper.String2Double(jItem["buy_max_price"].ToString()),
                                                 BuffSellPrice = Helper.String2Double(jItem["sell_min_price"].ToString()),
                                                 SteamSellPrice = Helper.String2Double(marketSellPrice),

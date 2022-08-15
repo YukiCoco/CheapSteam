@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <OutputType>Exe</OutputType>
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>

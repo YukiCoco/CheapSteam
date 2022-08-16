@@ -3,8 +3,12 @@ using ChpStmScraper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using CheapSteam.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using CheamSteam.UI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 builder.WebHost.ConfigureKestrel(option => option.ListenLocalhost(Configuration.ListenPort));
 
 // Add services to the container.
@@ -20,6 +24,11 @@ else
     builder.Services.AddSingleton<ChpStmScraper.Services.HttpService>();
 }
 builder.Services.AddDbContext<ScraperDbContext>(ServiceLifetime.Singleton);
+
+builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.ConnectionString));
+builder.Services.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlite(Configuration.ConnectionString));
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddSingleton<ScraperService>();
 
 
@@ -35,6 +44,7 @@ if (!app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseAuthentication();
 
 app.UseRouting();
 
@@ -46,5 +56,6 @@ if (!File.Exists("ChpStmScraper.db"))
     File.Copy("ChpStmScraper.Template.db", "ChpStmScraper.db");
     Console.WriteLine($"访问 http://127.0.0.1:{Configuration.ListenPort}/settings 进入程序配置界面");
 } else Console.WriteLine($"访问 http://127.0.0.1:{Configuration.ListenPort} 进入程序界面");
+app.UseAuthorization();
 
 app.Run();

@@ -267,7 +267,7 @@ namespace ChpStmScraper
         private static object o5 = new object();
         #endregion
         private int pageNum = 0;
-        private int maxPageNum = 2333;
+        private int maxPageNum = int.MaxValue;
         private int currentSyncThread = 0;
         private string lastScraperName = "";
 

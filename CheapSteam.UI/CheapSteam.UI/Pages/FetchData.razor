@@ -40,7 +40,7 @@ else
                     Steam 在售数
                 </Checkbox>
                 <Checkbox @bind-Checked="showBuffSellNum">
-                    BUFF 收购数
+                    BUFF 在售数
                 </Checkbox>
                 <Checkbox @bind-Checked="showUpdateTime">
                     更新时间
@@ -79,7 +79,7 @@ else
                 <Column @bind-Field="@context.SteamBuyRadio" Sortable Title="求购价比例" Hidden="@(!showSteamBuyRadio)" Filterable />
                 <Column @bind-Field="@context.SteamSellRadio" Sortable Title="出售价比例" Hidden="@(!showSteamSellRadio)" Filterable />
                 <Column @bind-Field="@context.SteamSellNum" Sortable Title="Steam 在售数" Hidden="@(!showSteamSellNum)" Filterable />
-                <Column @bind-Field="@context.BuffSellNum" Sortable Title="BUFF 收购数" Hidden="@(!showBuffSellNum)" Filterable />
+                <Column @bind-Field="@context.BuffSellNum" Sortable Title="BUFF 在售数" Hidden="@(!showBuffSellNum)" Filterable />
                 <Column @bind-Field="@context.UpdateTime" Format="MM-dd hh:mm" Sortable Title="更新时间" Hidden="@(!showUpdateTime)" Filterable />
             </Table>
         </Body>

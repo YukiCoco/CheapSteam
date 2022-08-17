@@ -3,8 +3,10 @@
 @inject ChpStmScraper.Services.HttpService httpService
 @inject CheapSteam.UI.Services.ScraperService scraperService
 @inject MessageService _message
+@attribute [Authorize]
 
 <PageTitle>首页</PageTitle>
+
 <h1 class="mb-4">概览</h1>
 <div class="row">
     <div class="col-sm-4">
@@ -27,6 +29,12 @@
         @*<button type="button" class="btn btn-outline-secondary btn-sm" @onclick="UpdateLog">刷新</button>*@
     </div>
     <div class="card-body" style="height: 40em">
+        <p class="card-text mb-1">
+        <AuthorizeView>
+            <h1>Hello !</h1>
+            <p>You can only see this content if you're authenticated.</p>
+        </AuthorizeView>
+        </p>
         @if (LogQueue == null)
         {
             <p class="card-text mb-1">loading...</p>

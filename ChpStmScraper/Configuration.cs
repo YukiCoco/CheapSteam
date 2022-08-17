@@ -212,5 +212,11 @@ namespace ChpStmScraper
             get => int.Parse(configurationRoot["MaxSellPrice"]);
             set => configurationRoot["MaxSellPrice"] = value.ToString();
         }
+
+        public static bool Auth
+        {
+            get => bool.Parse(configurationRoot["Auth"]);
+            set => configurationRoot["Auth"] = value.ToString();
+        }
     }
 }

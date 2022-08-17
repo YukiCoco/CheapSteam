@@ -7,6 +7,15 @@
 @using AntDesign.TableModels
 @inject ScraperDbContext DataContext
 
+@if (Configuration.Auth)
+{
+<AuthorizeView>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
+}
+
 <h1>数据查询</h1>
 
 @if (goods == null)

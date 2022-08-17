@@ -218,5 +218,11 @@ namespace ChpStmScraper
             get => bool.Parse(configurationRoot["Auth"]);
             set => configurationRoot["Auth"] = value.ToString();
         }
+
+        public static string ListenIP
+        {
+            get => configurationRoot["ListenIP"];
+            set => configurationRoot["ListenIP"] = value.ToString();
+        }
     }
 }

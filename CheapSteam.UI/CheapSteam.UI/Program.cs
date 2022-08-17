@@ -10,7 +10,9 @@ using CheamSteam.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
-builder.WebHost.ConfigureKestrel(option => option.ListenLocalhost(Configuration.ListenPort));
+builder.WebHost.ConfigureKestrel(option => {
+    option.Listen(System.Net.IPAddress.Parse(Configuration.ListenIP), 1272);
+});
 
 // Add services to the container.
 builder.Services.AddHttpClient();

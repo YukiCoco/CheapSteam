@@ -40,6 +40,7 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
+        body_path: Changelog/${{ env.RELEASE_VERSION }}-changelog.md
         draft: false
         prerelease: false
     - name: Upload Release Asset

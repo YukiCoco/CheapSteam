@@ -31,7 +31,7 @@ builder.Services.AddDbContext<ScraperDbContext>(ServiceLifetime.Singleton);
 
 builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.ConnectionString));
 builder.Services.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlite(Configuration.ConnectionString));
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddSingleton<ScraperService>();

@@ -6,8 +6,8 @@
 ### 直接运行
 通过 [发布页](https://github.com/YukiCoco/CheapSteam/releases) 下载适用于 Linux 的程序，然后解压到任意位置。
 ### 使用 Docker
-e.g. `docker container run -d -p 8888:1272 sayokurisu/cheapsteam:v2.1.0`  
-将 v2.1.0 的 CheapSteam 运行在 8888 端口上，此时可通过 HTTP 8888 端口直接访问  
+e.g. `docker container run -d -p 7777:1272 sayokurisu/cheapsteam:latest`  
+将 CheapSteam 运行在 7777 端口上，此时可通过 HTTP 7777 端口直接访问  
 **进入程序后请在设置页面勾选 `开启网页验证`**
 ## 部署
 ### 反向代理

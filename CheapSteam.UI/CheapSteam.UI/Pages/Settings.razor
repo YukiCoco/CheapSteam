@@ -1,7 +1,15 @@
 ﻿@page "/settings"
 @using System.ComponentModel.DataAnnotations
-
 <PageTitle>设置</PageTitle>
+
+@if (Configuration.Auth)
+{
+<AuthorizeView>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
+}
 
 <h1>设置</h1>
 <div class="row">
@@ -52,11 +60,35 @@
             </Body>
         </Card>
     </div>
+    <div class="col-lg-6">
+        <Card Title="账号配置" Class="shadow-sm mb-3">
+            <Body>
+                <Form Loading="loading" Model="@webModel"
+                      LabelColSpan="8"
+                      WrapperColSpan="16">
+                    <FormItem Label="开启网页验证">
+                        <Checkbox @bind-Value="@context.Auth">开启网页验证</Checkbox>
+                    </FormItem>
+
+                </Form>
+            </Body>
+        </Card>
+    </div>
 </div>
 
 
 @code
 {
+    public class WebModel
+    {
+        [Required]
+        public bool Auth
+        {
+            get => Configuration.Auth;
+            set => Configuration.Auth = value;
+        }
+    }
+
     public class BaseModel
     {
         [Required]
@@ -110,6 +142,7 @@
 
     private BaseModel baseModel = new BaseModel();
     private ScraperModel scraperModel = new ScraperModel();
+    private WebModel webModel = new WebModel();
 
     bool loading = false;
 

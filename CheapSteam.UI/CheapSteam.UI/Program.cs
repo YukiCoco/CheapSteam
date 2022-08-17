@@ -1,4 +1,4 @@
-﻿using CheapSteam.UI.Data;
+using CheapSteam.UI.Data;
 using ChpStmScraper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;

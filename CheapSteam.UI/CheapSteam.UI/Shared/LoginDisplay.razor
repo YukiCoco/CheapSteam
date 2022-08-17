@@ -5,7 +5,7 @@
 <AuthorizeView>
     <Authorized>
         <a href="Identity/Account/Manage/Index">
-            你好，@context.User.Identity.Name！
+            你好，@context.User.Identity.Name!
         </a>
         <form action="/Identity/Account/Logout?returnUrl=%2F" method="post">
             <button class="nav-link btn btn-link" type="submit">登出</button>

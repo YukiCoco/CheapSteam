@@ -1,13 +1,13 @@
 FROM bitnami/aspnet-core:6.0.8-debian-11-r3
 
-COPY CheapSteam-v2.1.0-linux-x64.zip /app/
+COPY CheapSteam-RELEASE_VERSION-linux-x64.zip /app/
 WORKDIR /app
 
 RUN apt-get update \
     && apt-get install -y unzip \
-    && unzip CheapSteam-v2.1.0-linux-x64.zip \
-    && chmod 755 /app/CheapSteam-v2.1.0-linux-x64/CheapSteam.UI
+    && unzip CheapSteam-RELEASE_VERSION-linux-x64.zip \
+    && chmod 755 /app/CheapSteam-RELEASE_VERSION-linux-x64/CheapSteam.UI
 
-WORKDIR /app/CheapSteam-v2.1.0-linux-x64
+WORKDIR /app/CheapSteam-RELEASE_VERSION-linux-x64
 
 CMD [ "./CheapSteam.UI" ]

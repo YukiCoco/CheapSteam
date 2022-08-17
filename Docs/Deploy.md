@@ -3,7 +3,12 @@
 `v2.1.0` 版本后添加了验证模块，您可以在服务器部署 CheapSteam。  
 此种方式的优点在于你无需通过特殊手段访问 Steam 市场（假定您部署在海外服务器上），而且对市场的爬取速度较为理想。
 ## 下载
+### 直接运行
 通过 [发布页](https://github.com/YukiCoco/CheapSteam/releases) 下载适用于 Linux 的程序，然后解压到任意位置。
+### 使用 Docker
+e.g. `docker container run -d -p 8888:1272 sayokurisu/cheapsteam:v2.1.0`  
+将 v2.1.0 的 CheapSteam 运行在 8888 端口上，此时可通过 HTTP 8888 端口直接访问  
+**进入程序后请在设置页面勾选 `开启网页验证`**
 ## 部署
 ### 反向代理
 将下列配置文件添加到 nginx 的配置中，一般路径为 `/etc/nginx/sites-enabled/`  
@@ -47,5 +52,7 @@ Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 WantedBy=multi-user.target
 ````
 `systemctl start cheapsteam` 开启运行 CheapSteam
+## 设置
+**进入程序后请在设置页面勾选 `开启网页验证`**
 ## 完成
 此时可以访问你的域名进入程序

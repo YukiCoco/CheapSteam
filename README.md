@@ -8,10 +8,11 @@ CheapSteam 为您提供 STEAM 与 BUFF 的饰品价格对比数据，您可以�
 + 易用的图像界面
 + 多线程高速爬取数据
 + 多数据过滤条件，快速找到合适的饰品
++ 在服务器部署
 
 ## 快速使用
-[Guide](https://github.com/YukiCoco/CheapSteam/blob/master/Guide.md)
-
+[使用指南](https://github.com/YukiCoco/CheapSteam/blob/master/Guide.md)  
+[在服务器部署](https://github.com/YukiCoco/CheapSteam/blob/master/Docs/Deploy.md)
 ## 下载
 **非常不建议从其他地方下载，因为要读取 Steam 和 BUFF Cookie，从其他地方下载的程序有可能会包含恶意代码导致财产损失。**  
 [Repo Release](https://github.com/YukiCoco/CheapSteam/releases)

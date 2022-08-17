@@ -6,12 +6,16 @@ using CheapSteam.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CheamSteam.UI.Data;
+using CheamSteam.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 builder.WebHost.ConfigureKestrel(option => option.ListenLocalhost(Configuration.ListenPort));
 
 // Add services to the container.
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<TokenProvider>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddAntDesign();
@@ -29,6 +33,7 @@ builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => opti
 builder.Services.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlite(Configuration.ConnectionString));
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddSingleton<ScraperService>();
 
 
